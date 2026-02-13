@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: sika-learn
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    info:
+      env:
+        enabled : true
+info:
+  app:
+    name: My super goal
+    description: A crazy fun app yoohoo !
+    version: 1.0.0
