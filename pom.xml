@@ -28,6 +28,8 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<!-- Override JUnit Jupiter version via Spring Boot property mechanism -->
+		<junit-jupiter.version>6.0.3</junit-jupiter.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -45,10 +47,17 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<!-- Tests: use Spring Boot starter-test and exclude JUnit 4 (Vintage) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
@@ -59,10 +68,11 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
+			<!-- Spotless: Google Java Format -->
 			<plugin>
 				<groupId>com.diffplug.spotless</groupId>
 				<artifactId>spotless-maven-plugin</artifactId>
-				<version>3.2.1</version>
+				<version>2.43.0</version>
 				<configuration>
 					<java>
 						<includes>
@@ -73,7 +83,6 @@
 							<version>1.17.0</version>
 							<style>GOOGLE</style>
 							<reflowLongStrings>true</reflowLongStrings>
-							<formatJavadoc>false</formatJavadoc>
 						</googleJavaFormat>
 						<importOrder/>
 						<removeUnusedImports/>
@@ -123,6 +132,40 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<!-- JaCoCo code coverage -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+							<dataFile>${project.build.directory}/jacoco.exec</dataFile>
+							<reports>
+								<report>
+									<outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+								</report>
+							</reports>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
