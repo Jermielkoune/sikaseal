@@ -37,6 +37,12 @@
 			<artifactId>spring-boot-starter-webmvc</artifactId>
 		</dependency>
 
+		<!-- JPA / Transactions pour la persistance et les tests d'intégration -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -59,6 +65,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<dependency>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-test-autoconfigure</artifactId>
+		  <scope>test</scope>
+		</dependency>
+
+		<!-- Base de données en mémoire H2 pour les tests d'intégration -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -80,7 +99,7 @@
 							<include>src/test/java/**/*.java</include>
 						</includes>
 						<googleJavaFormat>
-							<version>1.17.0</version>
+							<version>1.19.2</version>
 							<style>GOOGLE</style>
 							<reflowLongStrings>true</reflowLongStrings>
 						</googleJavaFormat>
@@ -155,17 +174,27 @@
 						<configuration>
 							<outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
 							<dataFile>${project.build.directory}/jacoco.exec</dataFile>
-							<reports>
-								<report>
-									<outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-								</report>
-							</reports>
 						</configuration>
 					</execution>
 				</executions>
 				<configuration>
 					<outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
 				</configuration>
+			</plugin>
+
+			<!-- Failsafe: tests d'intégration (*IT.java) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.2.5</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
