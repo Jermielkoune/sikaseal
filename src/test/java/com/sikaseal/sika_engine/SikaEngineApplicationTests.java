@@ -7,5 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class SikaEngineApplicationTests {
 
   @Test
-  void contextLoads() {}
+  void contextLoads() {
+    System.out.println(
+        "[IT] SikaEngineApplicationTests - Contexte Spring Boot chargé avec succès.");
+  }
 }
