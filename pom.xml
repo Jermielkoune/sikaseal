@@ -30,7 +30,27 @@
 		<java.version>21</java.version>
 		<!-- Override JUnit Jupiter version via Spring Boot property mechanism -->
 		<junit-jupiter.version>6.0.3</junit-jupiter.version>
+		<!-- Versions des dépendances Maven pour éviter les conflits de classloader -->
+		<doxia.version>2.0.0</doxia.version>
+		<plexus-utils.version>4.0.2</plexus-utils.version>
+		<plexus-xml.version>3.0.1</plexus-xml.version>
 	</properties>
+
+	<!-- Force les versions des dépendances transitives pour éviter les conflits doxia/plexus -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-utils</artifactId>
+				<version>${plexus-utils.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-xml</artifactId>
+				<version>${plexus-xml.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -135,6 +155,12 @@
 						<artifactId>checkstyle</artifactId>
 						<version>13.2.0</version>
 					</dependency>
+					<!-- Forcer plexus-utils compatible -->
+					<dependency>
+						<groupId>org.codehaus.plexus</groupId>
+						<artifactId>plexus-utils</artifactId>
+						<version>${plexus-utils.version}</version>
+					</dependency>
 				</dependencies>
 				<configuration>
 					<configLocation>google_checks.xml</configLocation>
@@ -227,13 +253,47 @@
 
 		<pluginManagement>
 			<plugins>
+				<!-- Désactiver maven-site-plugin par défaut pour éviter les conflits doxia/plexus -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>4.0.0-M16</version>
+					<configuration>
+						<skip>true</skip>
+					</configuration>
+				</plugin>
+				<!-- Forcer maven-project-info-reports-plugin pour éviter les conflits doxia -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>3.7.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<!-- Profil dédié pour l'analyse SonarQube/SonarCloud -->
+	<profiles>
+		<profile>
+			<id>sonar</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Désactiver les plugins qui causent des conflits avec le scanner Sonar -->
+				<checkstyle.skip>true</checkstyle.skip>
+				<spotless.check.skip>true</spotless.check.skip>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonarsource.scanner.maven</groupId>
+						<artifactId>sonar-maven-plugin</artifactId>
+						<version>5.0.0.4389</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
