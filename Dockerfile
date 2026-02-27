@@ -6,7 +6,7 @@ FROM eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /sikaseal
 
 COPY .mvn/ .mvn/
-COPY mvnw pom.xml ./
+COPY mvnw pom.xml sonar-project.properties ./
 RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 
