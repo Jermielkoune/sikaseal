@@ -3,7 +3,6 @@
 # Objectif : Télécharger les dépendances en cache, injecter le secret et compiler
 # ==============================================================================
 FROM eclipse-temurin:21-jdk-alpine AS builder
-RUN apk update && apk upgrade --no-cache
 WORKDIR /sikaseal
 
 COPY .mvn/ .mvn/
