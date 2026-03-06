@@ -26,17 +26,16 @@
 		<tag/>
 		<url/>
 	</scm>
+
 	<properties>
 		<java.version>21</java.version>
-		<!-- Override JUnit Jupiter version via Spring Boot property mechanism -->
 		<junit-jupiter.version>6.0.3</junit-jupiter.version>
-		<!-- Versions des dépendances Maven pour éviter les conflits de classloader -->
 		<doxia.version>2.0.0</doxia.version>
 		<plexus-utils.version>4.0.2</plexus-utils.version>
 		<plexus-xml.version>3.0.1</plexus-xml.version>
+		<jackson.version>3.1.0</jackson.version>
 	</properties>
 
-	<!-- Force les versions des dépendances transitives pour éviter les conflits doxia/plexus -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -57,12 +56,6 @@
 			<artifactId>spring-boot-starter-webmvc</artifactId>
 		</dependency>
 
-		<!-- JPA / Transactions pour la persistance et les tests d'intégration -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -73,7 +66,11 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- Tests: use Spring Boot starter-test and exclude JUnit 4 (Vintage) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -91,13 +88,6 @@
 		  <artifactId>spring-boot-test-autoconfigure</artifactId>
 		  <scope>test</scope>
 		</dependency>
-
-		<!-- Base de données en mémoire H2 pour les tests d'intégration -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -107,7 +97,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<!-- Spotless: Google Java Format -->
 			<plugin>
 				<groupId>com.diffplug.spotless</groupId>
 				<artifactId>spotless-maven-plugin</artifactId>
@@ -179,7 +168,6 @@
 				</executions>
 			</plugin>
 
-			<!-- JaCoCo code coverage -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -208,7 +196,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- Failsafe: tests d'intégration (*IT.java) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
@@ -223,7 +210,6 @@
 				</executions>
 			</plugin>
 
-			<!-- Charge les propriétés du fichier sonar-project.properties à la phase initialize -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>properties-maven-plugin</artifactId>
@@ -253,7 +239,6 @@
 
 		<pluginManagement>
 			<plugins>
-				<!-- Désactiver maven-site-plugin par défaut pour éviter les conflits doxia/plexus -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
@@ -262,7 +247,6 @@
 						<skip>true</skip>
 					</configuration>
 				</plugin>
-				<!-- Forcer maven-project-info-reports-plugin pour éviter les conflits doxia -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
@@ -272,7 +256,6 @@
 		</pluginManagement>
 	</build>
 
-	<!-- Profil dédié pour l'analyse SonarQube/SonarCloud -->
 	<profiles>
 		<profile>
 			<id>sonar</id>
@@ -280,7 +263,6 @@
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<!-- Désactiver les plugins qui causent des conflits avec le scanner Sonar -->
 				<checkstyle.skip>true</checkstyle.skip>
 				<spotless.check.skip>true</spotless.check.skip>
 			</properties>
@@ -295,5 +277,4 @@
 			</build>
 		</profile>
 	</profiles>
-
 </project>
