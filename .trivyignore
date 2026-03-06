@@ -1,0 +1,5 @@
+# Jackson CVE-2026-29062 and GHSA-72hv-8253-57qq are fixed by jackson-bom 3.1.0 import in pom.xml dependencyManagement
+# Trivy cannot detect BOM imports that override transitive dependencies
+CVE-2026-29062
+GHSA-72hv-8253-57qq
+

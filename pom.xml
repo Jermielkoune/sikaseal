@@ -33,10 +33,20 @@
 		<doxia.version>2.0.0</doxia.version>
 		<plexus-utils.version>4.0.2</plexus-utils.version>
 		<plexus-xml.version>3.0.1</plexus-xml.version>
+		<!-- Fix CVE-2026-29062 and GHSA-72hv-8253-57qq -->
+		<jackson-bom.version>3.1.0</jackson-bom.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Fix CVE-2026-29062 and GHSA-72hv-8253-57qq by importing Jackson BOM 3.1.0 -->
+			<dependency>
+				<groupId>tools.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson-bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
 				<artifactId>plexus-utils</artifactId>
