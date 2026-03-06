@@ -33,9 +33,6 @@
 		<doxia.version>2.0.0</doxia.version>
 		<plexus-utils.version>4.0.2</plexus-utils.version>
 		<plexus-xml.version>3.0.1</plexus-xml.version>
-		<jackson.version>3.1.0</jackson.version>
-		<!-- Override Spring Boot managed Jackson version to fix CVE-2026-29062 and GHSA-72hv-8253-57qq -->
-		<jackson-bom.version>3.1.0</jackson-bom.version>
 	</properties>
 
 	<dependencyManagement>
@@ -50,31 +47,9 @@
 				<artifactId>plexus-xml</artifactId>
 				<version>${plexus-xml.version}</version>
 			</dependency>
-			<!-- Force jackson-core version to fix CVE-2026-29062 and GHSA-72hv-8253-57qq -->
-			<dependency>
-				<groupId>tools.jackson.core</groupId>
-				<artifactId>jackson-core</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>tools.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<!-- Force Jackson 3.1.0 to fix CVE-2026-29062 and GHSA-72hv-8253-57qq -->
-		<dependency>
-			<groupId>tools.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>tools.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
