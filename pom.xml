@@ -1,290 +1,262 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.2</version>
-		<relativePath/>
-	</parent>
-	<groupId>com.sikaseal</groupId>
-	<artifactId>sika-engine</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>sika-engine</name>
-	<description>Spring Boot 4: Learn Spring 7, Spring Core, Spring REST, Spring Security, JPA, Hibernate, Swagger, Spring MVC, MySQL</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
+
+	<groupId>com.sikaseal.bank.kata</groupId>
+	<artifactId>hexagonal-bank</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>hexagonal bank</name>
+	<description/>
+
 	<developers>
-		<developer/>
+		<developer>
+			<name>Jermiel Kpessou Kounouho</name>
+			<email>kpessou_jermiel.kounouho@yahoo.com</email>
+			<url>https://github.com/Jermielkoune</url>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
 	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+
+	<modules>
+		<module>domain</module>
+        <module>exposition</module>
+		<module>infrastructure</module>
+		<module>launcher</module>
+	</modules>
 
 	<properties>
-		<java.version>21</java.version>
-		<junit-jupiter.version>6.0.3</junit-jupiter.version>
-		<doxia.version>2.0.0</doxia.version>
-		<plexus-utils.version>4.0.2</plexus-utils.version>
-		<plexus-xml.version>3.0.1</plexus-xml.version>
-		<!-- Fix CVE-2026-29062 and GHSA-72hv-8253-57qq -->
-		<jackson-bom.version>3.1.0</jackson-bom.version>
+		<maven.compiler.release>21</maven.compiler.release>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<plexus-utils.version>4.0.0</plexus-utils.version>
+		<junit-bom.version>6.0.3</junit-bom.version>
+		<assertj-bom.version>3.27.7</assertj-bom.version>
+		<spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+		<googleJavaFormat.version>1.19.2</googleJavaFormat.version>
+		<maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+		<com.puppycrawl.tools.version>13.2.0</com.puppycrawl.tools.version>
+		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
+		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
+		<log4j-bom.version>2.25.3</log4j-bom.version>
+		<slf4j-api.version>2.0.16</slf4j-api.version>
+		<disruptor.version>4.0.0</disruptor.version>
+		<spring-boot.version>4.0.5</spring-boot.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Fix CVE-2026-29062 and GHSA-72hv-8253-57qq by importing Jackson BOM 3.1.0 -->
+			<!-- framework de test unitaire standard -->
 			<dependency>
-				<groupId>tools.jackson</groupId>
-				<artifactId>jackson-bom</artifactId>
-				<version>${jackson-bom.version}</version>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit-bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- framework permettant d'écrire des assertions de test sous forme de phrases fluides et lisibles -->
+			<dependency>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-bom</artifactId>
+				<version>${assertj-bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- framework servant d'interface pour la gestion des logs -->
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-bom</artifactId>
+				<version>${log4j-bom.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.codehaus.plexus</groupId>
-				<artifactId>plexus-utils</artifactId>
-				<version>${plexus-utils.version}</version>
+				<groupId>com.lmax</groupId>
+				<artifactId>disruptor</artifactId>
+				<version>${disruptor.version}</version>
+				<scope>runtime</scope>
 			</dependency>
+			<!-- BOM Spring Boot permettant de gérer les versions des starters (web, test, validation, etc.) -->
 			<dependency>
-				<groupId>org.codehaus.plexus</groupId>
-				<artifactId>plexus-xml</artifactId>
-				<version>${plexus-xml.version}</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
+		<!-- framework-->
 	</dependencyManagement>
+
 	<dependencies>
-
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
 		</dependency>
 
+		<!--*********************************LOGGER**************************************-->
+		<!-- Pont pour rediriger les appels SLF4J vers Log4j2 -->
 		<dependency>
-		  <groupId>org.springframework.boot</groupId>
-		  <artifactId>spring-boot-test-autoconfigure</artifactId>
-		  <scope>test</scope>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j2-impl</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Implémentation Log4j2 -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- API SLF4J -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-api.version}</version>
+		</dependency>
+		<!-- Log4j2 JSON Layout pour la production (Structured Logging) -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-layout-template-json</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- LMAX Disruptor : requis pour AsyncLogger et AsyncRoot (performance lock-free) -->
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
 		</dependency>
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>com.diffplug.spotless</groupId>
-				<artifactId>spotless-maven-plugin</artifactId>
-				<version>2.43.0</version>
-				<configuration>
-					<java>
-						<includes>
-							<include>src/main/java/**/*.java</include>
-							<include>src/test/java/**/*.java</include>
-						</includes>
-						<googleJavaFormat>
-							<version>1.19.2</version>
-							<style>GOOGLE</style>
-							<reflowLongStrings>true</reflowLongStrings>
-						</googleJavaFormat>
-						<importOrder/>
-						<removeUnusedImports/>
-					</java>
-				</configuration>
-				<executions>
-					<execution>
-						<id>spotless-check</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>spotless-apply-on-format</id>
-						<phase>none</phase>
-						<goals>
-							<goal>apply</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.6.0</version>
-				<dependencies>
-					<dependency>
-						<groupId>com.puppycrawl.tools</groupId>
-						<artifactId>checkstyle</artifactId>
-						<version>13.2.0</version>
-					</dependency>
-					<!-- Forcer plexus-utils compatible -->
-					<dependency>
-						<groupId>org.codehaus.plexus</groupId>
-						<artifactId>plexus-utils</artifactId>
-						<version>${plexus-utils.version}</version>
-					</dependency>
-				</dependencies>
-				<configuration>
-					<configLocation>google_checks.xml</configLocation>
-					<consoleOutput>true</consoleOutput>
-					<failsOnError>true</failsOnError>
-					<linkXRef>false</linkXRef>
-				</configuration>
-				<executions>
-					<execution>
-						<id>validate</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.12</version>
-				<executions>
-					<execution>
-						<id>prepare-agent</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-							<dataFile>${project.build.directory}/jacoco.exec</dataFile>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>3.2.5</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>properties-maven-plugin</artifactId>
-				<version>1.2.1</version>
-				<executions>
-					<execution>
-						<id>read-sonar-properties</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>read-project-properties</goal>
-						</goals>
-						<configuration>
-							<files>
-								<file>sonar-project.properties</file>
-							</files>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>5.0.0.4389</version>
-			</plugin>
-		</plugins>
-
 		<pluginManagement>
 			<plugins>
+				<!--plugin permetant de convertir mon code en bytecode pour la jvm 21-->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>4.0.0-M16</version>
-					<configuration>
-						<skip>true</skip>
-					</configuration>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin.version}</version>
 				</plugin>
+				<!-- plugin d'exécution des tests unitaires -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>3.7.0</version>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven-surefire-plugin.version}</version>
+				</plugin>
+				<!-- plugin garantissant que le code source est bien formaté-->
+				<plugin>
+					<groupId>com.diffplug.spotless</groupId>
+					<artifactId>spotless-maven-plugin</artifactId>
+					<version>${spotless-maven-plugin.version}</version>
+					<configuration>
+						<java>
+							<includes>
+								<include>src/main/java/**/*.java</include>
+								<include>src/test/java/**/*.java</include>
+							</includes>
+							<googleJavaFormat>
+								<version>${googleJavaFormat.version}</version>
+								<style>GOOGLE</style>
+								<reflowLongStrings>true</reflowLongStrings>
+							</googleJavaFormat>
+							<importOrder/>
+							<removeUnusedImports/>
+						</java>
+					</configuration>
+					<executions>
+						<execution>
+							<id>spotless-check</id>
+							<phase>validate</phase>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- plugin vérifiant que le code respecte les règles de qualités et de style (correcteur d'orthographe) -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>${maven-checkstyle-plugin.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>${com.puppycrawl.tools.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>${plexus-utils.version}</version>
+						</dependency>
+					</dependencies>
+					<configuration>
+						<configLocation>google_checks.xml</configLocation>
+						<consoleOutput>true</consoleOutput>
+						<failsOnError>true</failsOnError>
+						<linkXRef>false</linkXRef>
+					</configuration>
+					<executions>
+						<execution>
+							<id>validate</id>
+							<phase>validate</phase>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- plugin de la gestion de la couverture de code par les tests -->
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>prepare-agent</id>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>report</id>
+							<phase>test</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
-	</build>
 
-	<profiles>
-		<profile>
-			<id>sonar</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<checkstyle.skip>true</checkstyle.skip>
-				<spotless.check.skip>true</spotless.check.skip>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.sonarsource.scanner.maven</groupId>
-						<artifactId>sonar-maven-plugin</artifactId>
-						<version>5.0.0.4389</version>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
