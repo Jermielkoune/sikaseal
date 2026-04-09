@@ -1,0 +1,63 @@
+# =========================================================
+# 1. Configuration du Serveur Web
+# =========================================================
+server:
+  port: 8080
+  servlet:
+    context-path: /bank-api # Toutes tes routes commenceront par http://localhost:8080/bank-api
+
+# =========================================================
+# 2. Identité de l'application
+# =========================================================
+spring:
+  application:
+    name: hexagonal-bank-kata
+
+# =========================================================
+# 3. Métadonnées de l'application
+# (Visible via l'endpoint /actuator/info)
+# =========================================================
+info:
+  app:
+    name: Bank Kata API
+    description: Une API bancaire en architecture hexagonale
+    version: 1.0.0
+
+# =========================================================
+# 4. Propriétés métiers custom
+# =========================================================
+bank:
+  rules:
+    default-currency: EUR
+
+# =========================================================
+# 5. Monitoring & Actuator
+# =========================================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+# =========================================================
+# 6. Documentation (Swagger / OpenAPI)
+# =========================================================
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+# =========================================================
+# 7. Logs
+# =========================================================
+logging:
+  config: classpath:log4j2.xml
+  level:
+    org.springframework.web: INFO
