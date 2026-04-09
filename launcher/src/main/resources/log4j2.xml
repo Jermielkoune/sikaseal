@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" packages="org.apache.logging.log4j.layout.template.json">
+
+    <Properties>
+        <Property name="LOG_DIR">${env:LOG_PATH:-/tmp/logs}</Property>
+        <Property name="APP_LOG_LEVEL">${env:APP_LOG_LEVEL:-INFO}</Property>
+        <Property name="ROOT_LOG_LEVEL">${env:ROOT_LOG_LEVEL:-WARN}</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <JsonTemplateLayout eventTemplateUri="classpath:EcsLayout.json" />
+        </Console>
+
+        <RollingFile name="RollingFile" fileName="${LOG_DIR}/kata.log"
+                     filePattern="${LOG_DIR}/kata-rolling-%d{yyyy-MM-dd}-%i.log">
+            <JsonTemplateLayout eventTemplateUri="classpath:EcsLayout.json" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="${LOG_DIR}" maxDepth="1">
+                    <IfFileName glob="kata-rolling-*.log" />
+                    <IfLastModified age="30d" /> </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <AsyncLogger name="com.sikaseal.bank.kata" level="${APP_LOG_LEVEL}" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </AsyncLogger>
+
+        <AsyncRoot level="${ROOT_LOG_LEVEL}">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </AsyncRoot>
+    </Loggers>
+</Configuration>
