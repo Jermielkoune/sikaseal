@@ -5,6 +5,7 @@
         <groupId>com.sikaseal.bank.kata</groupId>
         <artifactId>hexagonal-bank</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>infrastructure</artifactId>
