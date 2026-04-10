@@ -4,7 +4,7 @@
 
 	<groupId>com.sikaseal.bank.kata</groupId>
 	<artifactId>hexagonal-bank</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>${project.version}</version>
 	<packaging>pom</packaging>
 	<name>hexagonal bank</name>
 	<description/>
@@ -28,6 +28,7 @@
 	</modules>
 
 	<properties>
+		<project.version>1.0.0-SNAPSHOT</project.version>
 		<maven.compiler.release>21</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<plexus-utils.version>4.0.0</plexus-utils.version>
@@ -87,7 +88,6 @@
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
-		<!-- framework-->
 	</dependencyManagement>
 
 	<dependencies>
