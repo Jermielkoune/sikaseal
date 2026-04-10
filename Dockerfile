@@ -7,30 +7,43 @@ WORKDIR /sikaseal
 
 COPY .mvn/ .mvn/
 COPY mvnw pom.xml sonar-project.properties ./
+
+# Copier aussi les pom.xml des modules pour maximiser le cache Maven en multi-modules
+COPY domain/pom.xml domain/pom.xml
+COPY exposition/pom.xml exposition/pom.xml
+COPY infrastructure/pom.xml infrastructure/pom.xml
+COPY launcher/pom.xml launcher/pom.xml
+
+# Re-copie du parent POM après les modules (workaround cache/buildkit)
+COPY pom.xml ./
+
 RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline
 
-COPY src/ src/
-# -- Version AVEC secret --
-# RUN --mount=type=secret,id=TOKEN,env=TOKEN \
-#     ./mvnw clean package -DskipTests
+# (Note) En multi-modules, `dependency:go-offline` peut échouer tant que Maven ne peut pas
+# résoudre correctement le réacteur. On privilégie donc un build (qui téléchargera les deps)
+# après avoir copié les sources.
 
-# -- Version SANS secret --
-RUN ./mvnw clean package -DskipTests
+# Copier le code source des modules (structure réelle du repo)
+COPY domain/src/ domain/src/
+COPY exposition/src/ exposition/src/
+COPY infrastructure/src/ infrastructure/src/
+COPY launcher/src/ launcher/src/
+
+# Build du jar exécutable (Spring Boot) du module launcher uniquement
+RUN ./mvnw -q -DskipTests -pl launcher -am package
 
 # ==============================================================================
 # STAGE 2 : Extraction (Extractor)
-# Objectif : Découper le Fat JAR Spring Boot généré à l'étape 1 en layers optimisés
 # ==============================================================================
 FROM eclipse-temurin:21-jre-alpine AS extractor
 WORKDIR /sikaseal
 
-COPY --from=builder /sikaseal/target/*.jar application.jar
+# Le jar est produit dans launcher/target (pas target/ à la racine)
+COPY --from=builder /sikaseal/launcher/target/*.jar application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
 # ==============================================================================
 # STAGE 3 : Image finale (Runtime)
-# Objectif : Créer l'image de production sécurisée, minimale et découpée en couches
 # ==============================================================================
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /sikaseal
@@ -43,6 +56,7 @@ COPY --from=extractor /sikaseal/spring-boot-loader/ ./
 COPY --from=extractor /sikaseal/snapshot-dependencies/ ./
 COPY --from=extractor /sikaseal/application/ ./
 
-EXPOSE 8080
+# Ton app écoute sur 8082 (cf. launcher/src/main/resources/application.yml)
+EXPOSE 8082
 
 ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
