@@ -29,13 +29,25 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 @Import(LauncherApplication.JpaInfraConfig.class)
 public class LauncherApplication {
 
+  /**
+   * Point d'entrée de l'application Spring Boot.
+   *
+   * @param args arguments de ligne de commande
+   */
   public static void main(String[] args) {
     SpringApplication.run(LauncherApplication.class, args);
   }
 
+  /** Configuration JPA minimale pour l'infrastructure (EntityManagerFactory). */
   @Configuration
   static class JpaInfraConfig {
 
+    /**
+     * Déclare l'EntityManagerFactory en scannant les entités du module infrastructure.
+     *
+     * @param dataSource datasource configurée par Spring Boot
+     * @return un {@link LocalContainerEntityManagerFactoryBean}
+     */
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
       LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
