@@ -85,12 +85,18 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
+                            <!-- Vérifier couverture minimum sur domain (exposition/infrastructure exclus de Sonar) -->
                             <rules>
                                 <rule>
                                     <element>BUNDLE</element>
                                     <limits>
                                         <limit>
                                             <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.80</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
                                             <minimum>0.80</minimum>
                                         </limit>
