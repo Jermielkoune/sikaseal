@@ -49,17 +49,17 @@ bank:
 # =========================================================
 # 5. Monitoring & Actuator
 # =========================================================
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info
-  endpoint:
-    health:
-      show-details: always
-  info:
-    env:
-      enabled: true
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health, info
+#  endpoint:
+#    health:
+#      show-details: always
+#  info:
+#    env:
+#      enabled: true
 
 # =========================================================
 # 7. Logs
