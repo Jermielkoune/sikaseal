@@ -44,7 +44,7 @@
 		<log4j-bom.version>2.25.3</log4j-bom.version>
 		<slf4j-api.version>2.0.16</slf4j-api.version>
 		<disruptor.version>4.0.0</disruptor.version>
-		<spring-boot.version>4.0.5</spring-boot.version>
+		<spring-boot.version>4.0.0</spring-boot.version>
 	</properties>
 
 	<dependencyManagement>
@@ -86,6 +86,26 @@
 				<version>${spring-boot.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+
+			<!--
+				Overrides de sécurité : on reste en Spring Boot 4.0.0 mais on impose des versions corrigées
+				pour Tomcat et Jackson afin de satisfaire Trivy.
+			-->
+			<dependency>
+				<groupId>org.apache.tomcat.embed</groupId>
+				<artifactId>tomcat-embed-core</artifactId>
+				<version>11.0.21</version>
+			</dependency>
+			<dependency>
+				<groupId>tools.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>3.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>tools.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>3.1.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
