@@ -40,11 +40,10 @@
             </exclusions>
         </dependency>
 
-<!--        Risque securité déclenché par trivy
-            <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-starter-actuator</artifactId>
+       </dependency>
 
         <!-- JPA runtime (auto-config + EntityManager) pour que les repositories du module infrastructure soient activés -->
         <dependency>
