@@ -48,6 +48,7 @@ RUN java -Djarmode=layertools -jar application.jar extract
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /sikaseal
 
+RUN apk update && apk upgrade --no-cache openssl libcrypto3 libssl3
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
